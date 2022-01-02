@@ -1,0 +1,31 @@
+{% extends 'shopowner/base.html' %}
+
+{% block title %}
+Login
+{% endblock title %}
+
+{% block content %} 
+<div class= "container w-25 shadow p-3 mb-5 bg-body rounded">
+  <h1>Login Page</h1>
+  <form action="/partner_with_us/login" method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+          <label for="email" class="form-label" >Email</label>
+          <input id = "email" name="email" type = "email" class="form-control" required />
+      </div>
+      <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required/>
+      </div>
+      {% if error %}
+      <div class="alert alert-danger" role="alert">
+          {{error}}
+        </div>
+      {% endif %}
+      </br>
+      <button class="btn btn-sm btn-primary " type="submit">Login</button>
+  </form>
+</br>
+  <h3 class="text-center">Dont have account? Do <a href="{% url 'shopowner:register'%}">register</a></h3>
+</div>
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends 'customer/base.html' %}
+
+{% load static %}
+
+{% block title %}
+Shopify-{{cust.name}}
+{% endblock title %}
+
+{% block content %}
+    <div class="container text-center">
+    <img src="{{cust.image.url}}" class="img-thumbnail rounded" width=200 height=200 />
+    <h1>Welcome {{cust.name}}</h1>
+    </div>
+{% endblock content %}

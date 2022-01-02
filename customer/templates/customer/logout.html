@@ -1,0 +1,34 @@
+{% extends 'customer/base.html' %}
+
+{%block title%}
+  Logout
+{% endblock title%}
+
+{% block content %}
+<div class="container w-50 text-center mt-5">
+{% if logout %}
+<strong>You are logged Out</strong>
+{% else %}
+<form action="/logout" method="post">
+    {%csrf_token%}
+    <h1>Do You really want to Logout?</h1>
+    </br>
+   <button class="btn btn-danger btn-sm" type = "submit">Logout</button>
+</form>
+{% endif %}
+<a href="{% url 'customer:home' %}" class = "link">Home</a>
+</div>
+{% endblock content%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+</head>
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% extends 'shopowner/base.html' %}
+
+{% block title %}
+Shopify- Add Shop
+{% endblock title %}
+
+{% block content %}
+    <div class="container w-50">
+        <h1>Add Your Shop here</h1>
+
+        <form action="/partner_with_us/add_shop" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3 mx-5">
+              <label for="name" class="form-label" >Name of Your Shop</label>
+              <input id = "name" name="name" type = "text" class="form-control" required />
+            </div>
+            <div class= "mb-3 mx-5">
+                <label for="image" class="iform-label">Upload Your Shop Image</label>
+                <input id = "image" name="image" type = "file" accept="image/*" class="form-control" />
+            </div>
+            <div class="mb-3 mx-5">
+                <label for="address" class="form-label" >Address of Your Shop</label>
+                <input id = "address" name="address" type = "text" class="form-control" required />
+            </div>
+            <div class="mb-3 mx-5">
+                <label for="city" class="form-label" >City</label>
+                <input id = "city" name="city" type = "text" class="form-control" required />
+            </div>
+            <div class="mb-3 mx-5">
+                <label for="state" class="form-label" >State</label>
+                <input id = "state" name="state" type = "text" class="form-control" required />
+            </div>
+        </br>
+        <button class="btn btn-sm btn-primary mx-5" type="submit">Add</button>
+      </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends 'shopowner/base.html' %}
+
+{% block title %}
+logout  
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <h1>Do you really want to logout?</h1>
+        <form action="/partner_with_us/logout" method = 'post'>
+            {% csrf_token %}
+            <button class="btn btn-sm btn-danger">Logout</button>
+        </form>
+    </div>
+
+{% endblock content %}

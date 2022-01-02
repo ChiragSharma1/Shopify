@@ -1,0 +1,26 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}
+Shopify
+{% endblock title %}
+
+{% block content %}
+ {% if product %}
+  <div class="card text-center">
+    <div class="d-flex justify-content-center">
+    <div style="width:18rem;">
+      <img src="{{product.image.url}}" class="card-img-top"> 
+    </div>
+  </div>
+    <hr>     
+    <div class="card-body">
+      <h5 class="card-title">{{product.name}}</h5>
+      <p class="card-text">About Product: {{product.details}}</p>
+      <p class="card-text">Product Price: {{product.price}}/ {{product.unit}}</p>
+      <a href="#" class="btn btn-primary">Add To Cart</a>
+    </div>
+  </div>
+  {% else %}
+    <h1>Sorry This Product is Not available for now we will make it available as soon as possible</h1>
+ {% endif %}
+{% endblock content %}

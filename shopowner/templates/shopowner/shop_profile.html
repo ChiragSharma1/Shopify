@@ -1,0 +1,63 @@
+{% extends 'shopowner/base.html' %}
+
+{% block title %}
+Shopify - {{shop.name}}
+{% endblock title %}
+
+{% block content %}
+    <div class="container w-50">
+            <h1 class="">{{shop.name}}</h1>
+            <h5>{{shop.shopowner.name}}</h5>
+        </br></br><hr></br>
+        <h3>Recently Added Products</h3>
+        <div class=" d-flex flex-wrap">
+            {% for product in products %}
+            <div class="card mx-2 my-2" style="width: 18rem;">
+                <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+                <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">Price- {{product.price}}/{{product.unit}}</p>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+        </br></br>
+        <hr>
+    <section>
+    <h4>Add Product to your shop</h4>
+        <div class="container wd-50">
+            <form action="{% url 'shopowner:my_shop' shop.id%}"  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="ml-3 my-1">
+                    <label for="name" class="form-label">Name</label>
+                    <input id = "name" name="name" class="form-control" type="text" required/>
+                </div>
+                <div class="ml-3 my-1">
+                    <label for="image" class="iform-label">Upload image of Product</label>
+                    <input id = "image" name="image" class="form-control" type="file" accept = "image/*"/>
+                </div>
+                <div class="ml-3 my-1">
+                    <label for="price" class="form-label">Price</label>
+                    <input id = "price" name="price" class="form-control" type="number" required/>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="unit">Price of Product is per</label>
+                    </div>
+                    <select class="custom-select" id="unit" name="unit">
+                      <option value="Kg" >Kg (Kilogram)</option>
+                      <option value="l">l (liter)</option>
+                      <option value="packet">packet</option>
+                      <option value ="dozen">Dozen</option>
+                    </select>
+                  </div>
+                <div class="ml-3 my-1">
+                    <label for="detail" class="form-label">Product Detail</label>
+                    <input id = "detail" name="detail" class="form-control" type="text" required/>
+                </div>
+                <button class="btn btn-sm btn-primary">Add Product</button>
+            </form>
+        </div>
+    </section>
+    </div>
+{% endblock content %}

@@ -1,0 +1,17 @@
+<footer>
+</br>
+<hr>
+    <div class="d-flex justify-content-around">
+        <h4 ><a class="text-decoration-none" href="{% url 'customer:home'%}">Shopify</a></h4>
+        <h4 ><a class="text-decoration-none" href="{% url 'shopowner:home'%}">Join Us</a></h4>       
+    </div>
+    <div class="text-center">
+        <p>&copy;Copyright <span id="Currentyear">2022</span></p>
+    </div>
+</footer>
+
+<script>
+    const d = new Date();
+    const thisyear = d.getFullYear();
+    document.getElementById('Currentyear').innerHtml = thisyear;  
+</script>

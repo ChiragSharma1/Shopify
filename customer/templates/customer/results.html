@@ -1,0 +1,31 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}
+Shopify
+{% endblock title %}
+
+{% block style %}
+<style>
+    a{
+        text-decoration:none;
+        color:none;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+
+    <div class="container mt-5 text-center">
+            {% for shop in shops %}
+                    <div class="card mb-5 container" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ shop.image.url }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{shop.name}}</h5>
+                            <p class="card-text">Shop Address:  {{shop.address}}</p>
+                        </div>
+                        <a class="btn btn-sm btn-primary" href="{% url 'customer:shop_page' shop.id %}">Visit</a>
+                    </div>
+            {% endfor %}
+
+    </div>
+{% endblock content %}

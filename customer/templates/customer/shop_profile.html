@@ -1,0 +1,54 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}
+Shopify-{{shop.name}}
+{% endblock title %}
+
+{% block style %}
+<style>
+    .container{
+        background:linear-gradient(#FCBBFF,#D6FFFF);
+    }
+</style>
+{% endblock style %}
+{% block content %}
+
+
+    <div class = "container text-center mt-5">
+        {% if not_found %}
+         <h1>Shop Doesn't Exist, Please Check Again
+        {% else %}    
+            <img class="img-thumbnail" src="{{shop.image.url}}" height=500px width=500px>
+            <h2>{{shop.name}}</h2>
+            <h5>Shop-owner: {{shop.shopowner.name}}</h5>
+                </br></br></br></br>
+            {% comment %} <h3></h3>   here we can add contact number of Shop
+            {% endcomment %}  
+
+            <h5>You can search Your Product here</h5>
+            <form action = "{% url 'customer:shop_page' shop.id %}" method="post">
+                {% csrf_token %}
+                <input class="form-control" placeholder="Search Product Name" name="product_name" type="text"/>
+                <button class="btn btn-sm btn-outline-primary">Search</button>
+            </form>
+
+        </br>
+        <hr>
+        </br>
+        <div>
+            <h3>Latest Products Added in Shop</h3>
+                <div class=" d-flex flex-wrap">
+                    {% for product in products %}
+                    <div class="card mx-2 my-2" style="width: 18rem;">
+                        <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+                        <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <p class="card-text">Price- {{product.price}}/{{product.unit}}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock content %}

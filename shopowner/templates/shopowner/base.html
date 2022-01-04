@@ -21,72 +21,90 @@
       crossorigin="anonymous"
     ></script>
     <title>{%block title%}{% endblock %}</title>
+    <style>
+        .container.div-main{
+          min-height:100vh;
+          display:flex;
+          flex-direction:column;
+        }
+        main{
+          flex-grow:1;
+        }
+        footer{
+          margin-top:auto;
+          background-color:#f1f1f1;
+        }
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'shopowner:home'%}"
-          >Shopify-Partner</a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="collapse navbar-collapse d-flex justify-content-end mr-5"
-          id="navbarNav"
-        >
-          <ul class="navbar-nav">
-            {% if user %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'shopowner:add_shop'%}"
-                >Add Shop</a
-              >
-            </li>
-            <li class="nav-item dropdown mr-5">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                {{user.username}}
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">My Profile</a></li>
-                <li><a class="dropdown-item" href="#">My Shops</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="{% url 'shopowner:logout'%}"
-                    >Log Out</a
-                  >
-                </li>
-              </ul>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'shopowner:login' %}">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'shopowner:register' %}"
-                >Register</a
-              >
-            </li>
-            {% endif %}
-          </ul>
+    <div class="container div-main">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'shopowner:home'%}"
+            >Shopify-Partner</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse d-flex justify-content-end mr-5"
+            id="navbarNav"
+          >
+            <ul class="navbar-nav">
+              {% if user %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'shopowner:add_shop'%}"
+                  >Add Shop</a
+                >
+              </li>
+              <li class="nav-item dropdown mr-5">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {{user.username}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">My Profile</a></li>
+                  <li><a class="dropdown-item" href="#">My Shops</a></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'shopowner:logout'%}"
+                      >Log Out</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'shopowner:login' %}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'shopowner:register' %}"
+                  >Register</a
+                >
+              </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
-    {% block content %}{% endblock content %} 
-    {%include 'shopowner/footer.html'%}
+      </nav>
+      <main>
+        {% block content %}{% endblock content %} 
+      </main>
+      {%include 'shopowner/footer.html'%}
+    </div>
   </body>
 </html>

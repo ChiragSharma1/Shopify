@@ -24,7 +24,7 @@
     <title>Shopify-Home</title>
     
 <style>
-    .div1{
+    .bkimg{
         position:absolute;
         height:600px;
         width:100%;
@@ -42,18 +42,25 @@
         text-align:center;
         color:white
     }
+
+    {% comment %} now for making footer at end of page {% endcomment %}
     .container{
-      height:600px;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
     }
-    footer{
-      padding-top:30px;
-      padding-left:10%;
-      padding-right:10%;
+    .container .hmblwnav{
+      flex-grow:1;
     }
+    .container footer{
+      background-color:#f1f1f1;
+      margin-top:auto;
+    }
+
   </style>
 </head>
 <body>
- <img class="div1" src="{% static 'customer/shopify_home_store.jpg'%}"/>
+ <img class="bkimg" src="{% static 'customer/shopify_home_store.jpg'%}"/>
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-dark  hmnav">
           <div class="container-fluid">
@@ -87,7 +94,9 @@
               </ul>
             </div>
           </div>
-        </nav>
+      </nav>
+
+
         <div class="hmblwnav">
             <h3>Find Shop At Your Place</h3>
             <form class="row" action="/" method="post">
@@ -104,11 +113,9 @@
                 
             </form>
         </div>
-        {% if cust %}
-        <h1>{{cust.name}}</h1>
-        {% endif %}
-      </div>
+
       {% include 'customer/footer.html'%}
+      </div>
   </body>
 </html>
 

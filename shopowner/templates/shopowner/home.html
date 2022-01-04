@@ -24,7 +24,7 @@
     <title>Shopify-Home</title>
     
 <style>
-    .div1{
+    .bgimg{
         position:absolute;
         height:600px;
         width:100%;
@@ -45,71 +45,82 @@
     .div2{
       margin:0 22%;
     }
+
+    {% comment %} making footer at end of page {% endcomment %}
+    .div-main{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .div2{
+      flex-grow:1;
+    }
     footer{
-      padding-left:10%;
-      padding-right:10%;
-      padding-top:30px;
+      margin-top:auto;
+      background-color:#f1f1f1;
     }
 </style>
 </head>
 <body>
- <img class="div1"  src="{% static 'shop/shop_home_page.jpg' %}"/>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark hmnav">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="{% url 'shopowner:home'%}">Shopify-Partner</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse d-flex justify-content-end mr-5" id="navbarNav">
-                <ul class="navbar-nav">
-                  {% if user %}
-                  <li class="nav-item">
-                    <a class="nav-link" href = "{% url 'shopowner:add_shop'%}">Add Shop</a>
-                  </li>
-                  <li class="nav-item dropdown mr-5">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      {{user.username}}
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#">My Profile</a></li>
-                      <li><a class="dropdown-item" href="#">My Shops</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="{% url 'shopowner:logout'%}">Log Out</a></li>
-                    </ul>
-                  </li>
-                  {% else %} 
-                  <li class="nav-item">
-                    <a class="nav-link" href = "{% url 'shopowner:login' %}">Login</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class = "nav-link" href="{% url 'shopowner:register' %}">Register</a>
-                  </li>
-                  {% endif %}
-                </ul>
+    <img class="bgimg"  src="{% static 'shop/shop_home_page.jpg' %}"/>
+    <div class = "div-main">
+      <div class="container div1">
+          <nav class="navbar navbar-expand-lg navbar-dark hmnav">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'shopowner:home'%}">Shopify-Partner</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-flex justify-content-end mr-5" id="navbarNav">
+                  <ul class="navbar-nav">
+                    {% if user %}
+                    <li class="nav-item">
+                      <a class="nav-link" href = "{% url 'shopowner:add_shop'%}">Add Shop</a>
+                    </li>
+                    <li class="nav-item dropdown mr-5">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{user.username}}
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">My Profile</a></li>
+                        <li><a class="dropdown-item" href="#">My Shops</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'shopowner:logout'%}">Log Out</a></li>
+                      </ul>
+                    </li>
+                    {% else %} 
+                    <li class="navk-item">
+                      <a class="nav-link" href = "{% url 'shopowner:login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class = "nav-link" href="{% url 'shopowner:register' %}">Register</a>
+                    </li>
+                    {% endif %}
+                  </ul>
+                </div>
               </div>
-            </div>
-        </nav>
-        <div class="text-center">
-        <h2 style="margin-top:250px; margin-bottom:250px;color:white;">Welcome {{user.shopowner.name}}</h2>
-        </div>
-    </div>
-    <div class="conatainer text-center div2">
-     </br></hl></br>
-    <h3>Your Shops list</h3>
-      <div class="d-flex flex-wrap">
-        {% for shop in shops %}
-        <div class="card mx-3 my-3" style="width: 20rem;">
-          <img class="card-img-top" src="{{shop.image.url}}" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">{{shop.name}}</h5>
-            <p class="card-text">Shop Address: {{shop.address}}</p>
-            <p class = "card-text">Shop Products Sale  3</p>
-            <a href="{% url 'shopowner:my_shop' shop.id %}" class="btn btn-primary">Visit Shop</a>
+          </nav>
+          <div class="text-center">
+          <h2 style="margin-top:250px; margin-bottom:250px;color:white;">Welcome {{user.shopowner.name}}</h2>
           </div>
-        </div>
-        {% endfor %}
-      </div> 
+      </div>
+      <div class="conatainer text-center div2">
+            </br></hl></br>
+            <h3>Your Shops list</h3>
+            <div class="d-flex flex-wrap">
+              {% for shop in shops %}
+              <div class="card mx-3 my-3" style="width: 20rem;">
+                <img class="card-img-top" src="{{shop.image.url}}" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">{{shop.name}}</h5>
+                  <p class="card-text">Shop Address: {{shop.address}}</p>
+                  <p class = "card-text">Shop Products Sale  3</p>
+                  <a href="{% url 'shopowner:my_shop' shop.id %}" class="btn btn-primary">Visit Shop</a>
+                </div>
+              </div>
+              {% endfor %}
+            </div> 
+      </div>
+      {% include 'shopowner/footer.html' %}
     </div>
-    {% include 'shopowner/footer.html' %}
   </body>

@@ -127,7 +127,7 @@ def complete_register(request):
             owner.image = img
         owner.profile_complete = True
         owner.save()
-        redirect('shopowner:home')
+        return redirect('shopowner:home')
     return render(request, 'shopowner/complete_register.html', {
         'user': user
     })

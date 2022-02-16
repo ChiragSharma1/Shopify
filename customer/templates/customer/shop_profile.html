@@ -23,11 +23,17 @@ Shopify-{{shop.name}}
             <h5>Shop-owner: {{shop.shopowner.name}}</h5>
                 </br></br></br></br>
             {% comment %} <h3></h3>   here we can add contact number of Shop
-            {% endcomment %}  
+            {% endcomment %} 
+            {% if product_request_done %} 
+            <div class="alert alert-dark alert-dismissible fade show" role="alert">
+                <strong>Thank You</strong> for requesting the product. We will make it available soon.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endif %}
+
 
             <h5>You can search Your Product here</h5>
-            <form action = "{% url 'customer:shop_page' shop.id %}" method="post">
-                {% csrf_token %}
+            <form action = "{% url 'customer:shop_page_result' shop.id %}" method="get">
                 <input class="form-control" placeholder="Search Product Name" name="product_name" type="text"/>
                 <button class="btn btn-sm btn-outline-primary">Search</button>
             </form>

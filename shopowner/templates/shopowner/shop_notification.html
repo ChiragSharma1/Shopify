@@ -1,0 +1,34 @@
+{% extends 'shopowner/base.html' %}
+
+{% block title %}
+ Shopify-Notification
+{% endblock title %}
+
+{% block content %}
+
+    <h1>{{shop.name}}</h1>
+
+
+    {% ifequal notifications_count 0 %}
+       <h3>
+           No Notification or request available for now.
+       </h3>
+    
+    
+    {% else %}
+    
+      <h2>Number of notification - {{notifications_count}}</h2>
+      <ul>
+       {% for nf in notifications %}
+       <li>
+        <div class="card">
+          <div class="card-body">
+            {{nf.message}} by {{nf.customer.name}}
+          </div>
+        </div> 
+        </li>
+
+       {% endfor %}
+      </ul>
+    {% endifequal %}
+{% endblock content %}

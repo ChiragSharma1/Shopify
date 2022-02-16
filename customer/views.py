@@ -2,7 +2,7 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core import serializers
 from customer.models import Customer
-from shopowner.models import Product, Shopowner, Shop
+from shopowner.models import Product, Shopowner, Shop, Notification
 
 # Create your views here.
 
@@ -135,14 +135,18 @@ def profile(request):
 
 
 def results(request, city_name, shop_name=None):
-
+    try:
+        cust_email = request.session['customer_email']
+        customer = Customer.objects.get(email=cust_email)
+    except:
+        customer = None
     if shop_name == None:
         shops = Shop.objects.filter(city=city_name)
     else:
         shops = Shop.objects.filter(city=city_name, name__icontains=shop_name)
-    print(shops)
     return render(request, "customer/results.html", {
-        'shops': shops
+        'shops': shops,
+        'cust': customer
     })
 
 
@@ -152,25 +156,88 @@ def shop_page(request, shop_id):
     except:
         shop = None
 
+    try:
+        cust_email = request.session['customer_email']
+        customer = Customer.objects.get(email=cust_email)
+    except:
+        customer = None
     if not shop:
         return render(request, "customer/shop_profile.html", {
             'not_found': True
         })
 
-    if request.method == "POST":
-        products = shop.products.all()
-        try:
-            # __icontains make search Case insensitive , it also search if some substring is there or not
-            product = products.get(
-                name__icontains=request.POST['product_name'])
-            print(product)
-        except:
-            product = None
-        return render(request, "customer/product_page.html", {
-            'product': product
-        })
-    print(shop)
-    return render(request, "customer/shop_profile.html", {
+    product_request_done = None
+    if request.method == "POST" and request.POST.get("product_request") == "submit":
+        product_name = request.POST['product_name']
+        # for making product request user have to login first
+        if not request.session.has_key('customer_email'):
+            return redirect("customer:login")
+
+        # if logined then we will make request
+        cust_email = request.session['customer_email']
+        customer = Customer.objects.get(email=cust_email)
+        req = "i need " + product_name
+        notification = Notification(
+            customer=customer, message=req, tag="request", shop=shop)
+        notification.save()
+        product_request_done = True
+    context = {
         'shop': shop,
-        'products': shop.products.all()[:4]
+        'products': shop.products.all()[:4],
+        'cust': customer,
+        'product_request_done': product_request_done
+
+    }
+    return render(request, "customer/shop_profile.html", context=context)
+
+
+def shop_page_result(request, shop_id):
+    product_name = request.GET['product_name']
+    try:
+        cust_email = request.session['customer_email']
+        customer = Customer.objects.get(email=cust_email)
+    except:
+        customer = None
+
+    shop = Shop.objects.get(id=shop_id)
+    products = shop.products.all()
+    try:
+        # __icontains make search Case insensitive , it also search if some substring is there or not
+        product = products.get(
+            name__icontains=product_name)
+        print(product)
+    except:
+        product = None
+
+    return render(request, "customer/product_page.html", {
+        'product': product,
+        'shop': shop,
+        'pname': product_name,
+        'cust': customer
     })
+    return HttpResponse("hi there")
+
+    # when user request for product
+# if request.method == "POST" and 'product_request' in request.POST:
+    #     # for making product request user have to login first
+    #     if not request.session.has_key('customer_email'):
+    #         return redirect("customer:login")
+
+    #     # if logined then we will make request
+    #     cust_email = request.session['customer_email']
+    #     customer = Customer.objects.get(email=cust_email)
+    #     req = "i need " + product_name
+    #     notification = Notification(
+    #         customer=customer, message=req, tag="request", shop=shop)
+    #     notification.save()
+
+    #     return render(request, "customer/product_page.html", {
+    #         "product_request_done": True,
+    #         "shop": shop,
+    #         'cust': customer
+    #     })
+    #     # return render(request, "customer/product_page.html", {
+    #     #     'product': product,
+    #     #     'shop': shop,
+    #     #     'pname': product_name
+    #     # })

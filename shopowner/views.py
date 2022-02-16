@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
-from .models import Product, Shop, Shopowner
+from .models import Notification, Product, Shop, Shopowner
 # Create your views here.
 
 
@@ -189,6 +189,20 @@ def shop_profile(request, shopid):
         return redirect('shopowner:my_shop', s.id)
 
     return render(request, "shopowner/shop_profile.html", {
+        'user': request.user,
         'shop': s,
         'products': s.products.all()[:5]
+    })
+
+
+@login_required(login_url="partner_with_us/login")
+def shop_notification(request, shopid):
+    s = Shop.objects.get(id=shopid)
+    notification = Notification.objects.filter(shop=s)
+    notifications_count = notification.count()
+    return render(request, "shopowner/shop_notification.html", {
+        'user': request.user,
+        'shop': s,
+        'notifications': notification,
+        'notifications_count': notifications_count,
     })

@@ -9,6 +9,7 @@ urlpatterns = [
     path('cmp_register', complete_register, name="complete_register"),
     path('logout', logout, name="logout"),
     path('profile', profile, name="profile"),
+    path('shops/<int:shop_id>/result', shop_page_result, name="shop_page_result"),
     path('shops/<int:shop_id>', shop_page, name="shop_page"),
     path('results/<slug:city_name>/<slug:shop_name>', results, name="results"),
     path('results/<slug:city_name>', results, name="results"),

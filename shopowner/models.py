@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db.models.deletion import CASCADE
+from customer.models import Customer
 # Create your models here.
 
 
@@ -49,3 +50,14 @@ class Shop(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Notification(models.Model):
+    message = models.TextField(null=True)
+    tag = models.CharField(max_length=50, default="review")
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, default="")
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, default="")
+
+    def __str__(self):
+        return self.message

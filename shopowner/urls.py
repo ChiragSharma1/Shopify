@@ -11,5 +11,7 @@ urlpatterns = [
     path('profile', profile, name='profile'),
     path('logout', logout, name="logout"),
     path('add_shop', add_shop, name="add_shop"),
+    path('my_shop/<int:shopid>/notification/',
+         shop_notification, name="shop_notification"),
     path('my_shop/<int:shopid>/', shop_profile, name="my_shop"),
 ]

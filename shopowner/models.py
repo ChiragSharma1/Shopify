@@ -61,3 +61,20 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.message
+
+
+class Order(models.Model):
+    # tells the product of order
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # tells the shop to which order belongs
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE)  # customer who order this
+    total_price = models.IntegerField(
+        default=0)    # total price of this product
+    # tells if order is completed or not
+    completed = models.BooleanField(default=False)
+    count = models.IntegerField(default=1)    # number of products in order
+
+    def __str__(self):
+        return f'${self.product.name}-${self.shop.name}'

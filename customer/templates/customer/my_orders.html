@@ -1,0 +1,32 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}
+Shopify-Orders
+{% endblock title %}
+
+{% block content %}
+ 
+
+{% comment %} Fist- My Order Vala Section {% endcomment %}
+<div>
+    <h2>Your Orders are</h2>
+    <div class="container mt-5 text-center">
+        {% for order in order_list %}
+
+        <div class="card mb-3">
+            <img class="card-img-top" style="width:30%;"  src="{{ order.product.image.url }}" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">{{order.product.name}}</h5>
+              <p class="card-text">{{order.count}}</p>
+              <p class="card-text">Total Price - {{order.total_price}}</p>
+            </div>
+          </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+{% comment %} Second - My Previous Orders Vala Section {% endcomment %}
+
+{% endblock content %}

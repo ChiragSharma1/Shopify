@@ -1,8 +1,11 @@
+from ast import Or
+from http.client import HTTPResponse
+from pickletools import read_uint1
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core import serializers
 from customer.models import Customer
-from shopowner.models import Product, Shopowner, Shop, Notification
+from shopowner.models import Order, Product, Shopowner, Shop, Notification
 
 # Create your views here.
 
@@ -217,27 +220,35 @@ def shop_page_result(request, shop_id):
     })
     return HttpResponse("hi there")
 
-    # when user request for product
-# if request.method == "POST" and 'product_request' in request.POST:
-    #     # for making product request user have to login first
-    #     if not request.session.has_key('customer_email'):
-    #         return redirect("customer:login")
 
-    #     # if logined then we will make request
-    #     cust_email = request.session['customer_email']
-    #     customer = Customer.objects.get(email=cust_email)
-    #     req = "i need " + product_name
-    #     notification = Notification(
-    #         customer=customer, message=req, tag="request", shop=shop)
-    #     notification.save()
+def my_orders(request):
+    if not request.session.has_key('customer_email'):
+        return redirect('customer:login')
+    customer_email = request.session['customer_email']
+    customer = Customer.objects.get(email=customer_email)
 
-    #     return render(request, "customer/product_page.html", {
-    #         "product_request_done": True,
-    #         "shop": shop,
-    #         'cust': customer
-    #     })
-    #     # return render(request, "customer/product_page.html", {
-    #     #     'product': product,
-    #     #     'shop': shop,
-    #     #     'pname': product_name
-    #     # })
+    order_list = Order.objects.filter(customer=customer)
+
+    return render(request, 'customer/my_orders.html', {
+        'cust': customer,
+        'order_list': order_list,
+    })
+
+
+def place_order(request, shop_id):
+    # print("path is", request.path)
+    if not request.session.has_key('customer_email'):
+        return redirect('customer:login')
+    customer_email = request.session['customer_email']
+    customer = Customer.objects.get(email=customer_email)
+
+    if request.method == "POST":
+        product_id = request.POST['product_id']
+        product = Product.objects.get(id=product_id)
+        shop = Shop.objects.get(id=shop_id)
+        total_price = request.POST['total_price']
+        count = request.POST['count']
+        order = Order.objects.create(product=product, shop=shop,
+                                     total_price=total_price, count=count, customer=customer)
+        order.save()
+        return redirect('customer:my_orders')

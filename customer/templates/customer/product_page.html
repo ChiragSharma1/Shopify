@@ -1,34 +1,85 @@
 {% extends 'customer/base.html' %}
 
-{% block title %}
-Shopify
-{% endblock title %}
-
 {% block content %}
 
- {% if product_request_done %}
-   <div class="container">
-     <h2>Thank You for Requesting on our shop</h2>
-   </br></hr></br>
-   <h2> We will make Requested Product available soon, You can revisit , or can contact us for more detail</h2>
-   <a href="{% url 'customer:shop_page' shop.id %}">{{shop.name}} Page</a>
-   </div>
- {% elif product %}
-  <div class="card text-center">
-    <div class="d-flex justify-content-center">
-    <div style="width:18rem;">
-      <img src="{{product.image.url}}" class="card-img-top"> 
+{% if product_request_done %}
+<div class="container">
+  <h2>Thank You for Requesting on our shop</h2>
+</br></hr></br>
+<h2> We will make Requested Product available soon, You can revisit , or can contact us for more detail</h2>
+<a href="{% url 'customer:shop_page' shop.id %}">{{shop.name}} Page</a>
+</div>
+{% elif product %}
+<!-- Button trigger modal -->
+<div class="card text-center">
+  <div class="d-flex justify-content-center">
+  <div style="width:18rem;">
+    <img src="{{product.image.url}}" class="card-img-top"> 
+  </div>
+</div>
+  <hr>     
+  <div class="card-body">
+    <h5 class="card-title">{{product.name}}</h5>
+    <p class="card-text">About Product: {{product.details}}</p>
+    <p class="card-text">Product Price: {{product.price}}/ {{product.unit}}</p>
+    {% comment %} <a href="#" class="btn btn-primary">Add To Cart</a> {% endcomment %}
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Add to Cart
+    </button>
+  </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Add {{product.name}} to Cart
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card text-center">
+          <div class="d-flex justify-content-center">
+            <div style="width:18rem;">
+             <img src="{{product.image.url}}" class="card-img-top"> 
+            </div>
+          </div>
+        <hr>     
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text">Product Price: {{product.price}}/ {{product.unit}}</p>
+        </div>
+        <form id= "formid" action="{% url 'customer:place_order' shop_id=shop.id %}" method = "post" >
+          {% csrf_token %}
+          <div class= "d-flex flex-column align-items-center">
+          <div class="btn-group" role="group" aria-label="Basic example">
+              <label for="count" class="p-2">Number of Items</label>
+              <button type="button" class="btn btn-outline-primary" name="increase" id = "increase">+</button>
+              <input type = "number" id = "count" name = "count" value = 1 min=1 style = "width:50px" />
+              <button type="button" class="btn btn-outline-primary" name="decrease" id = "decrease" disabled>-</button>
+          </div>
+          </br>
+          <div>
+              <label for = "total_price">Total Price</label>
+          <input type = "number" id = "total_price" name="total_price" style="width:80px" value = {{product.price}} readonly />
+          </div>
+          </div>
+      </br>
+  
+      <input type = "number" id = "product_id" name="product_id" value = {{product.id}} hidden/>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Place Order</button>
+      </div>
+    </form>
     </div>
   </div>
-    <hr>     
-    <div class="card-body">
-      <h5 class="card-title">{{product.name}}</h5>
-      <p class="card-text">About Product: {{product.details}}</p>
-      <p class="card-text">Product Price: {{product.price}}/ {{product.unit}}</p>
-      <a href="#" class="btn btn-primary">Add To Cart</a>
-    </div>
-  </div>
-  {% else %}
+</div>
+{% else %}
     <h1>Sorry This Product is Not available for now.</h1>
     <h2>You can request for this product</h2>
     <form action="{% url 'customer:shop_page' shop_id=shop.id %}" method="post">
@@ -38,3 +89,31 @@ Shopify
     </form>
  {% endif %}
 {% endblock content %}
+
+{% block page_script %}
+ <script>
+  var count = document.querySelector("#formid input[name = 'count']");
+  var total_price = document.querySelector("#formid input[name = 'total_price']");
+  var product_price = {{product.price}};
+  var inc_btn = document.querySelector("#formid #increase"); 
+  var dec_btn = document.querySelector("#formid #decrease");
+  inc_btn.addEventListener('click',()=>{
+    if (count.value >= 1){
+      dec_btn.disabled = false;
+    }
+    count.value++;
+    total_price.value = product_price*(count.value);
+    console.log(count.value);
+  });
+  dec_btn.addEventListener('click',()=>{
+    if(count.value==1)return;
+    if(count.value==2){
+      dec_btn.disabled = true;
+    }
+    count.value--;
+    total_price.value = product_price*(count.value);  
+    console.log(count.value)
+  });
+
+ </script>
+{% endblock page_script %}

@@ -45,6 +45,7 @@ Shopify-{{shop.name}}
             <h3>Latest Products Added in Shop</h3>
                 <div class=" d-flex flex-wrap">
                     {% for product in products %}
+                    <a href="http://localhost:8000/shops/{{shop.id}}/result?product_name={{product.name}}" style = "text-decoration:none; color:black">
                     <div class="card mx-2 my-2" style="width: 18rem;">
                         <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
                         <div class="card-body">
@@ -52,6 +53,7 @@ Shopify-{{shop.name}}
                         <p class="card-text">Price- {{product.price}}/{{product.unit}}</p>
                         </div>
                     </div>
+                </a>
                     {% endfor %}
                 </div>
         </div>

@@ -5,6 +5,7 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core import serializers
 from customer.models import Customer
+from django.contrib.auth.hashers import make_password, check_password
 from shopowner.models import Order, Product, Shopowner, Shop, Notification
 
 # Create your views here.
@@ -39,7 +40,7 @@ def login(request):
         if Customer.objects.filter(email=email).exists():
             cust = Customer.objects.get(email=email)
             # if customer password doesnot matchs
-            if password != cust.password:
+            if cust.check_Customer_password(password) == False:
                 error = "password is incorrect"
                 return render(request, "customer/login.html", {
                     'error': error
@@ -97,6 +98,7 @@ def complete_register(request):
         cust.city = request.POST['city']
         cust.state = request.POST['state']
         cust.gender = request.POST['gender']
+        cust.complete_info = True
         try:
             cust.image = request.FILES['image']
         except:

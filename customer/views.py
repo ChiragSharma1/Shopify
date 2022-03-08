@@ -1,6 +1,3 @@
-from ast import Or
-from http.client import HTTPResponse
-from pickletools import read_uint1
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core import serializers
@@ -12,15 +9,22 @@ from shopowner.models import Order, Product, Shopowner, Shop, Notification
 
 
 def home(request):
-    if request.method == "POST":
-        scity = request.POST['scity']
-        scity = scity.lower()
+    # if request.method == "POST":
 
-        sshop = request.POST['sshop']
-        sshop = sshop.lower()
-        if len(sshop) == 0:
-            return redirect('customer:results', scity)
-        return redirect('customer:results', scity, sshop)
+    #     scity = request.POST['scity']
+    #     scity = scity.lower()
+    #     if request.POST.get('shop'):
+    #         print('shop name is ', request.POST['shop'])
+
+    #     elif request.POST.get('product'):
+    #         print('product name is ', request.POST['product'])
+
+    #     sshop = request.POST['shop']
+    #     sshop = sshop.lower()
+    #     if len(sshop) == 0:
+    #         return redirect('customer:results', scity)
+    #     return redirect('customer:results', scity, sshop)
+    #     return HttpResponse("HI There")
 
     if request.session.has_key("customer_email"):
         cust_email = request.session['customer_email']
@@ -139,19 +143,48 @@ def profile(request):
     })
 
 
-def results(request, city_name, shop_name=None):
+def results(request):
     try:
         cust_email = request.session['customer_email']
         customer = Customer.objects.get(email=cust_email)
     except:
         customer = None
-    if shop_name == None:
-        shops = Shop.objects.filter(city=city_name)
-    else:
-        shops = Shop.objects.filter(city=city_name, name__icontains=shop_name)
+    city_name = request.GET['city_name']
+    if request.GET.get('shop'):
+        # it will return shop list
+        shop_name = request.GET['shop']
+        shops_list = Shop.objects.filter(
+            city=city_name, name__icontains=shop_name)
+        print("Shop list, ", shops_list)
+        list_length = len(shops_list)
+        return render(request, "customer/results.html", {
+            'shops': shops_list,
+            'cust': customer,
+            'message': 'Showing You Shops in "' + city_name + '" with name similar to "' + shop_name + '"',
+            'list_length': list_length
+        })
+
+    if request.GET.get('product'):
+        # it will return product list avilable
+        product_name = request.GET['product']
+        product_list = Product.objects.filter(
+            name__icontains=product_name, shop__city=city_name)
+        list_length = len(product_list)
+        print("Product Name ", product_list)
+        return render(request, "customer/results.html", {
+            'products': product_list,
+            'cust': customer,
+            'message': 'Showing You Product in "' + city_name + '" with name similar to "' + product_name + '"',
+            'list_length': list_length
+        })
+
+    shops = Shop.objects.filter(city=city_name)
+    list_length = len(shops)
     return render(request, "customer/results.html", {
         'shops': shops,
-        'cust': customer
+        'cust': customer,
+        'message': 'Showing You Shops present in "' + city_name + '"',
+        'list_length': list_length
     })
 
 

@@ -99,13 +99,19 @@
 
         <div class="hmblwnav">
             <h3>Find Shop At Your Place</h3>
-            <form class="row" action="/" method="post">
-              {% csrf_token %}
+            <form class="row" action="{% url 'customer:results' %}" method="get">
                 <div class="col mr-0">
-                    <input class="form-control" name="scity" id="scity" type="text" placeholder="City Name" required/>
+                    <input class="form-control" name="city_name" id="city_name" type="text" placeholder="City Name" required/>
                 </div>
                 <div class="col mr-0">
-                    <input class="form-control" name="sshop" id = "sshop" type="text" placeholder = "Search By Shop Name"/>
+                    {% comment %} <input class="form-control" name="sshop" id = "sshop" type="text" placeholder = "Search By Shop Name"/> {% endcomment %}
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control"  placeholder="Search by..." name = "shop" id = "searchingfield">
+                      <select class="form-select dropdown-toggle" id = "select_search">
+                        <option value = "shop" selected>Shop</option>
+                        <option value="product">Product</option>
+                      </select>
+                    </div>
                 </div>
                 <div class="text-center mt-5">
                 <button class="btn btn-primary">Search</button>
@@ -119,3 +125,18 @@
   </body>
 </html>
 
+
+{% block page_script %}
+  <script>
+    let searchingfield = document.getElementById("searchingfield");
+    let select_search = document.getElementById("select_search");
+    select_search.addEventListener('change',()=>{
+      if(select_search.value == "shop"){
+        searchingfield.name= "shop";
+      }
+      else{
+        searchingfield.name= "product";
+      }
+    })
+  </script>
+{% endblock page_script %}

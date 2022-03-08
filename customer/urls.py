@@ -13,6 +13,5 @@ urlpatterns = [
     path('shops/<int:shop_id>/result', shop_page_result, name="shop_page_result"),
     path('shops/<int:shop_id>/order', place_order, name='place_order'),
     path('shops/<int:shop_id>', shop_page, name="shop_page"),
-    path('results/<slug:city_name>/<slug:shop_name>', results, name="results"),
-    path('results/<slug:city_name>', results, name="results"),
+    path('results/search', results, name="results"),
 ]

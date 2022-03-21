@@ -1,0 +1,40 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}
+Shopify
+{% endblock title %}
+
+{% block style %}
+<style>
+    a{
+        text-decoration:none;
+        color:none;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+    {% ifequal list_length 0 %}
+    <h2>No Products with this name </h2>
+    <h3>You can try searching with some different keyword </h3>
+    {% else %}
+    <h2>Product with name '{{pname}}' present in {{shop.name}} shop are -</h2>
+    <div class = "container mt-5 text-center">
+        <div class="row">
+          <div class = "col-md-10 offset-1">
+            {% for product in products %}
+            <div class="card mb-5 container" style="width: 18rem;">
+                <img class="card-img-top" src="{{ product.image.url }}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">product details:  {{product.details}}</p>
+                    <p class="card-text">product price:  {{product.price}}</p>
+                </div>
+                <a class="btn btn-sm btn-primary" href="{% url 'customer:product_page' shop.id product.id %}">Visit</a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+    </div>
+    {% endifequal %}
+{% endblock content %}

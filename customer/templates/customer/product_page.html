@@ -2,14 +2,10 @@
 
 {% block content %}
 
-{% if product_request_done %}
-<div class="container">
-  <h2>Thank You for Requesting on our shop</h2>
-</br></hr></br>
-<h2> We will make Requested Product available soon, You can revisit , or can contact us for more detail</h2>
-<a href="{% url 'customer:shop_page' shop.id %}">{{shop.name}} Page</a>
-</div>
-{% elif product %}
+{% if not product or not shop %}
+<p>Wrong page</p>
+<a href = "{% url 'customer:home'%}">home page</a>
+{% else %}
 <!-- Button trigger modal -->
 <div class="card text-center">
   <div class="d-flex justify-content-center">
@@ -79,14 +75,6 @@
     </div>
   </div>
 </div>
-{% else %}
-    <h1>Sorry This Product is Not available for now.</h1>
-    <h2>You can request for this product</h2>
-    <form action="{% url 'customer:shop_page' shop_id=shop.id %}" method="post">
-      {% csrf_token %}
-      <input hidden name = "product_name" type = "text" value = {{pname}}/>
-      <input name="product_request" type="submit" value="submit" />
-    </form>
  {% endif %}
 {% endblock content %}
 

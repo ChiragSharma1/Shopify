@@ -238,22 +238,15 @@ def shop_page_result(request, shop_id):
         customer = None
 
     shop = Shop.objects.get(id=shop_id)
-    products = shop.products.all()
-    try:
-        # __icontains make search Case insensitive , it also search if some substring is there or not
-        product = products.get(
-            name__icontains=product_name)
-        print(product)
-    except:
-        product = None
-
-    return render(request, "customer/product_page.html", {
-        'product': product,
+    products = Product.objects.filter(name__icontains=product_name, shop=shop)
+    list_length = len(products)
+    return render(request, "customer/product_result.html", {
+        'products': products,
+        'list_length': list_length,
         'shop': shop,
+        'cust': customer,
         'pname': product_name,
-        'cust': customer
     })
-    return HttpResponse("hi there")
 
 
 def my_orders(request):
@@ -287,3 +280,25 @@ def place_order(request, shop_id):
                                      total_price=total_price, count=count, customer=customer)
         order.save()
         return redirect('customer:my_orders')
+
+
+def product_page(request, shop_id, product_id):
+    try:
+        shop = Shop.objects.get(id=shop_id)
+    except:
+        shop = None
+    try:
+        product = Product.objects.get(id=product_id)
+    except:
+        product = None
+    try:
+        cust_email = request.session['customer_email']
+        customer = Customer.objects.get(email=cust_email)
+    except:
+        customer = None
+    print("----------", shop, product)
+    return render(request, 'customer/product_page.html', {
+        'shop': shop,
+        'product': product,
+        'cust': customer,
+    })

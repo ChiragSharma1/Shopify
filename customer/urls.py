@@ -11,6 +11,8 @@ urlpatterns = [
     path('profile', profile, name="profile"),
     path('myorders', my_orders, name="my_orders"),
     path('shops/<int:shop_id>/result', shop_page_result, name="shop_page_result"),
+    path('shops/<int:shop_id>/<int:product_id>',
+         product_page, name="product_page"),
     path('shops/<int:shop_id>/order', place_order, name='place_order'),
     path('shops/<int:shop_id>', shop_page, name="shop_page"),
     path('results/search', results, name="results"),

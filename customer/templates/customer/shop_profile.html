@@ -50,7 +50,11 @@ Shopify-{{shop.name}}
                         <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
                         <div class="card-body">
                         <h5 class="card-title">{{product.name}}</h5>
-                        <p class="card-text">Price- {{product.price}}/{{product.unit}}</p>
+                        {% if product.discount == 0.0%}
+                        <p class="card-text">Price - {{product.price}}/{{product.unit}}</p>
+                        {% else %}
+                        <p class="card-text">Price- <del>{{product.price}}/{{product.unit}}</del> {{product.get_discounted_price}}/{{product.unit}}</p>
+                        {% endif %}
                         </div>
                     </div>
                 </a>

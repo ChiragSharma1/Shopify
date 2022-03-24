@@ -1,0 +1,50 @@
+{% extends 'shopowner/base.html' %}
+
+{% block title %}
+Edit Product - {{product.name}}
+{% endblock title %}
+
+
+{% block content %}
+    <h2>You can add or change details for your product as you want</h2>
+    <center>
+        <img src="{{product.image.url}}" class="rounded" alt = "{{product.name}}img.jpg" />
+    </center>
+    <div class="container wd-54">
+        <form action="{% url 'shopowner:edit_product' shop.id product.id %}"  method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="ml-3 my-1">
+                <label for="name" class="form-label">Name</label>
+                <input id = "name" name="name" class="form-control" value = "{{product.name}}" type="text" required/>
+            </div>
+            <div class="ml-3 my-1">
+                <label for="image" class="iform-label">Upload image of Product</label>
+                <input id = "image" name="image" class="form-control" type="file" accept = "image/*"/>
+            </div>
+            <div class="ml-3 my-1">
+                <label for="price" class="form-label">Price</label>
+                <input id = "price" name="price" class="form-control" type="number" value = {{product.price}} required/>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="unit">Price of Product is per</label>
+                </div>
+                <select class="custom-select" id="unit" name="unit">
+                  <option {% if product.unit == "Kg"%} selected {% endif%} value="Kg" >Kg (Kilogram)</option>
+                  <option {% if product.unit == "l"%} selected {% endif%} value="l">l (liter)</option>
+                  <option {% if product.unit == "packet"%} selected {% endif%} value="packet">packet</option>
+                  <option {% if product.unit == "dozen"%} selected {% endif%} value ="dozen">Dozen</option>
+                </select>
+              </div>
+            <div class="ml-3 my-1">
+                <label for="details" class="form-label">Product Detail</label>
+                <input id = "details" name="details" class="form-control" type="text" value = {{product.details}} required/>
+            </div>
+            <div class="ml-3 my-1">
+                <label for = "discount" class = "form-label">Discount in Percentage</label>
+                <input id = "discount" name="discount" class="form-control" type="number" value = {{product.discount}} step="0.01" placeholder="0%"/>
+            </div>
+            <button class="btn btn-sm btn-primary">Edit Product</button>
+        </form>
+    </div>
+{% endblock content %}

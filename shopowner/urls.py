@@ -13,5 +13,7 @@ urlpatterns = [
     path('add_shop', add_shop, name="add_shop"),
     path('my_shop/<int:shopid>/notification/',
          shop_notification, name="shop_notification"),
+    path('my_shop/<int:shopid>/product/<int:productid>/',
+         edit_product, name="edit_product"),
     path('my_shop/<int:shopid>/', shop_profile, name="my_shop"),
 ]

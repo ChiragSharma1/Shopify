@@ -17,7 +17,11 @@
   <div class="card-body">
     <h5 class="card-title">{{product.name}}</h5>
     <p class="card-text">About Product: {{product.details}}</p>
-    <p class="card-text">Product Price: {{product.price}}/ {{product.unit}}</p>
+    {% if product.discount == 0.0%}
+    <p class="card-text">Price - {{product.price}}/{{product.unit}}</p>
+    {% else %}
+    <p class="card-text">Price- <del>{{product.price}}/{{product.unit}}</del> {{product.get_discounted_price}}/{{product.unit}}</p>
+    {% endif %}
     {% comment %} <a href="#" class="btn btn-primary">Add To Cart</a> {% endcomment %}
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Add to Cart
@@ -45,7 +49,11 @@
         <hr>     
         <div class="card-body">
           <h5 class="card-title">{{product.name}}</h5>
-          <p class="card-text">Product Price: {{product.price}}/ {{product.unit}}</p>
+          {% if product.discount == 0.0%}
+          <p class="card-text">Price - {{product.price}}/{{product.unit}}</p>
+          {% else %}
+          <p class="card-text">Price- <del>{{product.price}}/{{product.unit}}</del> {{product.get_discounted_price}}/{{product.unit}}</p>
+          {% endif %}
         </div>
         <form id= "formid" action="{% url 'customer:place_order' shop_id=shop.id %}" method = "post" >
           {% csrf_token %}
@@ -58,8 +66,9 @@
           </div>
           </br>
           <div>
-              <label for = "total_price">Total Price</label>
-          <input type = "number" id = "total_price" name="total_price" style="width:80px" value = {{product.price}} readonly />
+          <label for = "total_price">Total Price</label>
+          <input type = "number" id = "total_price" name="total_price" style="width:80px" value = {{product.get_discounted_price}} readonly />
+          <p>You are saving <span id = "saved_price"></span></p>
           </div>
           </div>
       </br>
@@ -83,14 +92,20 @@
   var count = document.querySelector("#formid input[name = 'count']");
   var total_price = document.querySelector("#formid input[name = 'total_price']");
   var product_price = {{product.price}};
+  var discounted_product_price = {{product.get_discounted_price}};
+  var discount = {{product.discount}};
   var inc_btn = document.querySelector("#formid #increase"); 
   var dec_btn = document.querySelector("#formid #decrease");
+  var saving_price = document.querySelector("#formid #saved_price");
+  saving_price.innerHTML = product_price -  discounted_product_price;
   inc_btn.addEventListener('click',()=>{
     if (count.value >= 1){
       dec_btn.disabled = false;
     }
     count.value++;
-    total_price.value = product_price*(count.value);
+    total_price.value = discounted_product_price*(count.value);
+    saving_price.innerHTML = (product_price-discounted_product_price)*(count.value);
+    
     console.log(count.value);
   });
   dec_btn.addEventListener('click',()=>{
@@ -99,7 +114,8 @@
       dec_btn.disabled = true;
     }
     count.value--;
-    total_price.value = product_price*(count.value);  
+    total_price.value = discounted_product_price*(count.value); 
+    saving_price.innerHTML = (product_price-discounted_product_price)*(count.value);
     console.log(count.value)
   });
 

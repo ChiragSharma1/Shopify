@@ -176,7 +176,9 @@ def shop_profile(request, shopid):
         details = request.POST['detail']
         price = request.POST['price']
         unit = request.POST['unit']
-        product = Product(name=name, details=details, price=price, unit=unit)
+        discount = request.POST['discount']
+        product = Product(name=name, details=details,
+                          price=price, unit=unit, discount=discount)
         try:
             image = request.FILES['image']
         except:
@@ -206,3 +208,25 @@ def shop_notification(request, shopid):
         'notifications': notification,
         'notifications_count': notifications_count,
     })
+
+
+@login_required(login_url='partner_with_us/login')
+def edit_product(request, shopid, productid):
+    shop = Shop.objects.filter(id=shopid).first()
+    product = Product.objects.filter(id=productid).first()
+    if request.method == "POST":
+        product.name = request.POST['name']
+        product.details = request.POST['details']
+        product.price = request.POST['price']
+        product.unit = request.POST['unit']
+        product.discount = request.POST['discount']
+        try:
+            product.image = request.FILES['image']
+        except:
+            pass
+        product.save()
+        return redirect('shopowner:my_shop', shopid)
+    return render(request, 'shopowner/shop_edit_product.html', {
+        'product': product,
+        'user': request.user,
+        'shop': shop})

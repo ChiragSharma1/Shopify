@@ -32,9 +32,18 @@ class Product(models.Model):
         upload_to="product/images", default="product/images/product_default.jpg")
     # this will be measuring unit
     unit = models.CharField(max_length=50, default="Kg")
+    # discount will be in Percentage
+    discount = models.FloatField(default="0")
 
     def __str__(self):
         return self.name + " " + self.details
+
+    @property
+    def get_discounted_price(self):
+        discount = self.discount
+        price = self.price
+        discounted_price = price - (discount/100)*price
+        return discounted_price
 
 
 class Shop(models.Model):

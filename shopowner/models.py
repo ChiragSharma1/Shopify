@@ -84,6 +84,10 @@ class Order(models.Model):
     # tells if order is completed or not
     completed = models.BooleanField(default=False)
     count = models.IntegerField(default=1)    # number of products in order
+    status = models.CharField(
+        default="pending", max_length=20)  # status of order
+    address = models.CharField(
+        null=True, max_length=70)         # address for order
 
     def __str__(self):
         return f'${self.product.name}-${self.shop.name}'

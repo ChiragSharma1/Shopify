@@ -1,0 +1,34 @@
+{% extends 'shopowner/base.html'%}
+
+{% block content %}
+    {% if not shop %}
+        <h1>Shop dosen't exits<h1>
+    {% else %}
+    <h1> Orders of your shop </h1>
+  
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Customer</th>
+            <th scope = "col">Quantity</th>
+            <th>Total Price</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{order.product.name}}</td>
+            <td>{{order.customer.name}}</td>
+            <td>{{order.count}}</td>
+            <td>{{order.total_price}}</td>
+            <td>Status : {{order.status}}</td>
+            <td><a class="btn btn-sm btn-primary" href="{% url 'shopowner:order' order.id%}">View Order</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+{% endblock content %}

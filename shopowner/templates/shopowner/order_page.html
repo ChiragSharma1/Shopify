@@ -1,0 +1,41 @@
+{% extends 'shopowner/base.html' %}
+
+{% block content %}
+
+<div class="container text-center">
+</br>
+    <div class="mt-4">
+    <img class="img-thumbnail  shadow p-3 mb-5 bg-body rounded" alt="order image" src="{{order.product.image.url}}" style = "height:500px; width:500px;">
+    </div>
+    <div class="card shadow p-3 mb-5 bg-body rounded">
+        <div class="card-body">
+            <h3 class="card-title">{{order.product.name}}</h3>
+            <p class = "card-text">Ordered By - {{order.customer.name}}</p>
+            <p class = "card-text">Address - {{order.address}}</p>
+            <p class = "card-text">Quantity - {{order.count}}</p>
+            <p class = "card-text">Price - {{order.total_price}}</p>
+            <form class="form" method="Post" action="{% url 'shopowner:order' order.id%}">
+                {% csrf_token %}
+                <p class="card-text">Current Status - {{order.status}}</p>
+                <div class="mb-3 row">
+                    <div class="col-sm-4 offset-4">
+                        <label class="me-3  " for="order_status" class="form-label">Change Status</label>
+                        <div class="d-inline-block">
+                        <select class="form-select" aria-label="select" name = "order_status">
+                            <option value = "pending">Pending</option>
+                            <option value = "cancelled">Cancelled</option>
+                            <option value = "completed">Completed</option>
+                            <option value = "shipped">Shipped</option>
+                            <option value = "on-hold">On-hold</option>
+                          </select>
+                        </div>
+                        <button class="btn btn-outline-primary mb-1" type="submit" value = "submit" name="change_order_status">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+</div>
+{% endblock content %}

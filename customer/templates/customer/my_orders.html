@@ -14,13 +14,24 @@ Shopify-Orders
         {% for order in order_list %}
 
         <div class="card mb-3">
-            <img class="card-img-top" style="width:30%;"  src="{{ order.product.image.url }}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">{{order.product.name}}</h5>
-              <p class="card-text">{{order.count}}</p>
-              <p class="card-text">Total Price - {{order.total_price}}</p>
+          <div class="row g-0">
+            <div class="col-md-4 d-flex justify-content-center align-items-center">
+              <div>
+              <img class="card-img" style="width:40%;"  src="{{ order.product.image.url }}" alt="Card image cap">
+              </div>
+              <div class="flex-grow-1"></div>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{order.product.name}}</h5>
+                <p class="card-text">{{order.count}}</p>
+                <p class="card-text">Total Price - {{order.total_price}}</p>
+                <p class="card-text">Address - {%if order.address%} {{order.address}} {%else%} {{cust.address}} {%endif%}</p>
+                <p class="card-text">Order Status - {{order.status}}</p>
+              </div>
             </div>
           </div>
+        </div>
 
         {% endfor %}
 

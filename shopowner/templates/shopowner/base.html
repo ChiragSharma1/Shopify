@@ -22,7 +22,7 @@
     ></script>
     <title>{%block title%}{% endblock %}</title>
     <style>
-        .container.div-main{
+        .div-main{
           min-height:100vh;
           display:flex;
           flex-direction:column;
@@ -43,8 +43,8 @@
     </style>
   </head>
   <body>
-    <div class="container div-main">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="div-main">
+      <nav class="navbar navbar-expand-lg navbar-light"  style="background-color: #e3f2fd;">
         <div class="container-fluid">
           <a class="navbar-brand" href="{% url 'shopowner:home'%}"
             >Shopify-Partner</a

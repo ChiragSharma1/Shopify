@@ -10,6 +10,9 @@ Shopify
         text-decoration:none;
         color:none;
     }
+    .card:hover{
+      background-color:#E3F2FD;
+    }
 </style>
 {% endblock style %}
 
@@ -18,32 +21,44 @@ Shopify
     <h2>No shop/Products with this name </h2>
     <h3>You can try searching with some different keyword </h3>
     {% else %}
-    <h2>{{message}}</h2>
     {% if shops %}
     <div class="container mt-5 text-center">
-            {% for shop in shops %}
-                    <div class="card mb-5 container" style="width: 18rem;">
-                        <img class="card-img-top" src="{{ shop.image.url }}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">{{shop.name}}</h5>
-                            <p class="card-text">Shop Address:  {{shop.address}}</p>
+            
+              <div class="row">
+                <div class="col-md-10 offset-1">
+                  {% for shop in shops %}
+                    <div class="card mb-5" style= "max-width:1000px;height:180px;">
+                      <a href = "{% url 'customer:shop_page' shop.id%}" style="text-decoration:none;color:black">
+                        <div class="row g-3">
+                          <div class="col-md-4">
+                            <img src = "{{shop.image.url}}" alt = "Card image cap" style="width:270px;height:180px;">
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body">
+                              <h5 class="card-title">{{shop.name}}</h5>
+                              <p class="card-text">Shop Address:  {{shop.address}}</p>
+                            </div>
+                          </div>
                         </div>
-                        <a class="btn btn-sm btn-primary" href="{% url 'customer:shop_page' shop.id %}">Visit</a>
+
+                      </a>
                     </div>
-            {% endfor %}
+                  {% endfor %}
                 </div>
+              </div>
+            </div>
     {% elif products %}
     <div class = "container mt-5 text-center">
         <div class="row">
           <div class = "col-md-10 offset-1">
             {% for product in products %}
-        <h2>{{product.name}} is available in following shops - </h2>
+        {% comment %} <h2>{{product.name}} is available in following shops - </h2> {% endcomment %}
             {% for shop in product.shop.all %}
-            <div class="card mb-3" style="max-width: 1000px;">
+            <div class="card mb-3" style="max-width: 1000px;height:180px;">
                 <a href="{% url 'customer:product_page' shop.id product.id%}" style="text-decoration: none; color:black;">
                   <div class="row g-3">
                     <div class="col-md-4">
-                      <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="Card image">
+                      <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="Card image" style="width:270px;height:180px;">
                     </div>
                     <div class="col-md-8">
                       <div class="card-body">

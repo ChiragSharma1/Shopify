@@ -275,8 +275,6 @@ def results(request):
 
             'cust': customer,
 
-            'message': 'Showing You Shops in "' + city_name + '" with name similar to "' + shop_name + '"',
-
             'list_length': list_length
 
         })
@@ -301,8 +299,6 @@ def results(request):
 
             'cust': customer,
 
-            'message': 'Showing You Product in "' + city_name + '" with name similar to "' + product_name + '"',
-
             'list_length': list_length
 
         })
@@ -316,8 +312,6 @@ def results(request):
         'shops': shops,
 
         'cust': customer,
-
-        'message': 'Showing You Shops present in "' + city_name + '"',
 
         'list_length': list_length
 
